@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 const Statistics = (props) => {
-
   const good = props.good
   const neutral = props.neutral
   const bad = props.bad
@@ -19,13 +18,17 @@ const Statistics = (props) => {
 
   return(
     <div>
-      
-      <StatisticLine text="good" value ={good} />
-      <StatisticLine text="neutral" value ={neutral} />
-      <StatisticLine text="bad" value ={bad} />
-      <StatisticLine text="all" value ={sum} />
-      <StatisticLine text="average" value ={(good-bad)/sum} />
-      <StatisticLine text="positive" value ={(good/sum)*100} />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value ={good} />
+            <StatisticLine text="neutral" value ={neutral} />
+            <StatisticLine text="bad" value ={bad} />
+            <StatisticLine text="all" value ={sum} />
+            <StatisticLine text="average" value ={(good-bad)/sum} />
+            <StatisticLine text="positive" value ={(good/sum)*100} />
+          </tbody>
+          
+        </table>      
     </div>
   )
 }
@@ -41,15 +44,25 @@ const Button = (props) => {
 const StatisticLine = (props) => {
   if (props.text === "positive") {
     return(
-      <p>
-      {props.text} {props.value} %
-    </p>
+      <tr>
+        <td>
+          {props.text} 
+        </td>
+        <td>
+          {props.value} %
+      </td> 
+    </tr>
     )
   }
   return(
-    <p>
-      {props.text} {props.value}
-    </p>
+    <tr>
+      <td>
+        {props.text}
+      </td>
+      <td>
+        {props.value}
+      </td> 
+    </tr>
   )
 }
 

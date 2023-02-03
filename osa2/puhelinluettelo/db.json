@@ -11,24 +11,9 @@
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Meikä Molokki",
-      "number": "050 125 5498",
-      "id": 5
-    },
-    {
-      "name": "Meikä Manuli",
-      "number": "123 456 7890",
-      "id": 6
+      "name": "Meikä Monsuuni",
+      "number": "012 345 6789",
+      "id": 7
     }
   ]
 }

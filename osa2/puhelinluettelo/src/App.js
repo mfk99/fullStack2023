@@ -62,7 +62,7 @@ const App = () => {
       setPersons(persons.concat(personObject))
       personService
         .create(personObject)
-        .then(response => setPersons(persons.concat(response.data)))
+        .then(response => setPersons(response.data))
         setNotification(`Added ${newName}`)
         setTimeout(() => {
           setNotification(null)

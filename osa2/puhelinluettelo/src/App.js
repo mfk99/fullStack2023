@@ -53,22 +53,29 @@ const App = () => {
         .catch(error => {
           setError(`Information of ${newName} has alreay been removed from the server`)
           setTimeout(() => {
-            setNotification(null)
+            setError(null)
           }, 5000)
         })
       }
-    }
-    else {
-      setPersons(persons.concat(personObject))
+    } else {
       personService
         .create(personObject)
-        .then(response => setPersons(response.data))
-        setNotification(`Added ${newName}`)
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      setNewName('')
-      setNewNumber('')
+        .then(response => {
+          console.log('THEN');
+          setPersons(persons.concat(personObject))
+          setNotification(`Added ${newName}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        setNewName('')
+        setNewNumber('')
+        })
+        .catch(error => {
+          setError(error.response.data.error)
+          setTimeout(() => {
+            setError(null)
+          }, 5000)
+        })
     }
   }
 

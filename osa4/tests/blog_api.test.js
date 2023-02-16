@@ -17,6 +17,26 @@ test('correct amount of blogs are returned', async () => {
 
 })
 
+test('all blogs have id attribute', async () => {
+  const response = await api.get('/api/blogs')
+  const body = response.body
+  body.forEach(blog => {
+    expect(blog.id).toBeDefined()
+  })
+})
+
+test('posting a blog adds it to the list', async () => {
+  const blog = {
+    title: "TDD harms architecture",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    likes: 0,
+  }
+  await api.post('/api/blogs', blog)
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(helper.initialBlogs.length+1)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

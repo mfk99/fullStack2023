@@ -1,10 +1,2 @@
-POST http://localhost:3003/api/blogs
-content-type: application/json
+DELETE http://localhost:3003/api/blogs/63f240a4550cf3b30ad70618
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpIiwiaWQiOiI2M2YyMWFjMTRhOTJhMDIxOTk2Nzg3MzciLCJpYXQiOjE2NzY4MTYxNTN9.2QiJjcRKH4tO_9vLITRbWBRgRX8_5E4lHyBk6W-jHBI
-
-{
-  "title": "testi",
-  "author": "testimies",
-  "url": "tollane",
-  "likes": 123
-}

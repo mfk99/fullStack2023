@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
+import BlogForm from './components/blogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [blogCreationVisible, setBlogCreationVisible] = useState(false)
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
-  const [title, setTitle] = useState('') 
-  const [author, setAuthor] = useState('') 
-  const [url, setUrl] = useState('') 
+  
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -67,26 +66,20 @@ const App = () => {
      window.localStorage.removeItem('loggedBlogappUser')
   }
 
-  const handleBlogCreation = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blogObject) => {
     try {
-      const newBlog = await blogService.create({
-        title,
-        author,
-        url
-      })
+      const newBlog = await blogService.create(
+        blogObject
+      )
       setBlogs (blogs.concat(newBlog))
-
+      
       setNotificationMessage(
-        `a new blog ${title} by ${author} added`
+        `a new blog ${newBlog.title} by ${newBlog.author} added`
       )
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
 
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     } catch (exception) {
       setErrorMessage(
         `Blog must contain a title, an author and a url`
@@ -160,41 +153,11 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}> logout </button>
       </p>
-      <button onClick={() => setBlogCreationVisible(true)}>new blog</button>
-      <h2>create new</h2>
       <Notification message = {notificationMessage}/>
       <Error error = {errorMessage}/>
-      <form onSubmit={handleBlogCreation}>
-        <div>
-          title:
-          <input
-          type="title"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          author:
-          <input
-          type="author"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url:
-          <input
-          type="url "
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
-      <button onClick={() => setBlogCreationVisible(false)}>cancel</button>
+      <Togglable buttonLabel='new blog'>
+        <BlogForm createBlog={addBlog} />
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

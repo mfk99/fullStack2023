@@ -1,12 +1,16 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({ createBlog }) => {
 
+  BlogForm.propTypes = {
+    createBlog: PropTypes.func.isRequired
+  }
 
-  const [title, setTitle] = useState('') 
-  const [author, setAuthor] = useState('') 
-  const [url, setUrl] = useState('') 
-  
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
   const addBlog = (event) => {
     event.preventDefault()
     createBlog({
@@ -25,34 +29,37 @@ const BlogForm = ({ createBlog }) => {
   return (
     <>
       <h2>create new</h2>
-        <form onSubmit={addBlog}>
-          <div>
+      <form onSubmit={addBlog}>
+        <div>
             title:
-            <input
-              type="title"
-              value={title}
-              name="Title"
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </div>
-          <div>
+          <input
+            type="title"
+            value={title}
+            name="Title"
+            onChange={({ target }) => setTitle(target.value)}
+            placeholder='write title here'
+          />
+        </div>
+        <div>
             author:
-            <input
-              type="author"
-              value={author}
-              name="Author"
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </div>
-          <div>
+          <input
+            type="author"
+            value={author}
+            name="Author"
+            onChange={({ target }) => setAuthor(target.value)}
+            placeholder='write author here'
+          />
+        </div>
+        <div>
             url:
-            <input
-              type="url "
-              value={url}
-              name="Url"
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </div>
+          <input
+            type="url "
+            value={url}
+            name="Url"
+            onChange={({ target }) => setUrl(target.value)}
+            placeholder='write url here'
+          />
+        </div>
         <button type="submit">create</button>
       </form>
     </>

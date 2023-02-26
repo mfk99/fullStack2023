@@ -1,6 +1,12 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
+
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    handleLike: PropTypes.func.isRequired
+  }
 
   const [infoVisible, setInfoVisible] = useState(false)
 
@@ -15,23 +21,31 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
+
   if (infoVisible) {
     return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author} 
-      <button onClick={toggleVisibility}> hide </button>
-      <div>
-        {blog.url}<br/>
-        likes {blog.likes} <button> like </button><br/>
-        {blog.user.name}
+      <div style={blogStyle} className='blog'>
+        {blog.title} {blog.author}
+        <button onClick={toggleVisibility}> hide </button>
+        <div>
+          {blog.url}<br/>
+        likes {blog.likes}
+          <button onClick ={() => {handleLike(blog)}
+          }>
+          like
+          </button> <br/>
+          {blog.user.name} <br/>
+          <button onClick ={() => {console.log(blog.id)}
+          }>
+          remove
+          </button>
         </div>
-    </div>
-  )} else {
+      </div>
+    )} else {
     return(
-      <div style={blogStyle}>
-        {blog.title} {blog.author} 
-      <button onClick={toggleVisibility}> view </button>
+      <div style={blogStyle} className='blog'>
+        {blog.title} {blog.author}
+        <button onClick={toggleVisibility}> view </button>
       </div>
     )
   }

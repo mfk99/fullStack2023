@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+const baseUrl = 'http://localhost:3003/api/blogs'
 
 let token = null
 
@@ -13,7 +13,7 @@ const getAll = () => {
 }
 
 const create = async blogObject => {
-  
+
   const config = {
     headers: { Authorization: token },
   }
@@ -23,9 +23,9 @@ const create = async blogObject => {
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${ baseUrl } /${id}`, newObject)
+  const request = axios.put(`${ baseUrl }/${id}`, newObject)
+
   return request.then(response => response.data)
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, create, update, setToken }

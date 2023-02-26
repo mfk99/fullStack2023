@@ -11,3 +11,5 @@ Palautusrepositorio kurssin fullStack2023 aikataulutetulle toteutukselle
 [Osa3](https://github.com/mfk99/fullstack2023-part3)
 
 [Osa4](https://github.com/mfk99/fullStack2023/tree/main/osa4)
+
+[Osa5](https://github.com/mfk99/fullStack2023/tree/main/osa5/bloglist-front)

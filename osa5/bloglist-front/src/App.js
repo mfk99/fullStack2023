@@ -16,19 +16,24 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService
+      .getAll()
+      .then(blogs =>
+        setBlogs( blogs )
+      )
   }, [])
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+
       blogService.setToken(user.token)
     }
   }, [])
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -73,7 +78,6 @@ const App = () => {
     const userId = blogObject.user.id
     blogObject.user = userId
     blogObject.likes += 1
-    console.log(blogObject)
 
     const response = await blogService.update(blogObject.id, blogObject)
     setBlogs(blogs.map(blog => blog.id !== id ? blog : response))
@@ -105,6 +109,32 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (blogObject) => {
+    if (window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}`)) {
+      try {
+        const id = blogObject.id
+        await blogService.remove(id)
+
+        setBlogs(blogs.filter(blog => blog.id !== id))
+
+        setNotificationMessage(
+          `blog ${blogObject.title} was removed`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+
+      } catch (exception) {
+        setErrorMessage(
+          'something went wrong :/'
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }
+  }
+
 
   const Notification = ( { message } ) => {
     if (!message) {
@@ -128,6 +158,7 @@ const App = () => {
     )
   }
 
+
   if (user === null) {
     return (
       <div>
@@ -138,6 +169,7 @@ const App = () => {
           <div>
         username
             <input
+              id='username'
               type="text"
               value={username}
               name="Username"
@@ -147,13 +179,14 @@ const App = () => {
           <div>
         password
             <input
+              id='password'
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">login</button>
+          <button id='login-button' type="submit">login</button>
         </form>
       </div>
     )
@@ -175,7 +208,11 @@ const App = () => {
       {blogs
         .sort((a, b) => b.likes-a.likes )
         .map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLike={handleLike}
+            removeBlog={removeBlog} />
         )}
     </div>
   )

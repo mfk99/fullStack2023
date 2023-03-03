@@ -6,8 +6,8 @@ const notificationSlice = createSlice({
   reducers: {
     setNotification(state, action) {
 
-      console.log(state);
-      console.log(action.payload);
+      /*console.log(state);
+      console.log(action.payload);*/
       
       state = action.payload
       setTimeout(() => {

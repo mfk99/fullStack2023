@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 const Notification = () => {
   
   const notification = useSelector(state => {
-    console.log(state);
+    /*console.log(state);*/
     return state.notification
   })
   const style = {
@@ -21,5 +21,7 @@ const Notification = () => {
   } 
   return null
 }
+
+//dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
 
 export default Notification

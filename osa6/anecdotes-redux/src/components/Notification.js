@@ -22,6 +22,6 @@ const Notification = () => {
   return null
 }
 
-//dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
+//
 
 export default Notification

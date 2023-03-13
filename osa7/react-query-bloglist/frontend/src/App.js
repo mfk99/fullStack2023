@@ -5,11 +5,29 @@ import loginService from './services/login'
 import storageService from './services/storage'
 import commentService from './services/comments'
 import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  Button,
+  TextField,
+  Box,
+  AppBar,
+  Toolbar,
+  IconButton,
+} from '@mui/material'
+import '@fontsource/roboto/300.css'
+
+import {
   BrowserRouter as Router,
   Routes,
   Route,
   Link,
   useParams,
+  useNavigate,
 } from 'react-router-dom'
 
 import LoginForm from './components/Login'
@@ -99,29 +117,29 @@ const App = () => {
 
   if (!user) {
     return (
-      <div>
-        <h2>log in to application</h2>
-        <Notification info={info} />
-        <LoginForm login={login} />
-      </div>
+      <Container>
+        <div>
+          <Typography variant="h2" gutterBottom>
+            log in to the application
+          </Typography>
+          <Notification info={info} />
+          <LoginForm login={login} />
+        </div>
+      </Container>
     )
   }
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   const Blog = ({ blog }) => {
-    const style = {
-      marginBottom: 2,
-      padding: 5,
-      borderStyle: 'solid',
-    }
-
     return (
-      <div style={style} className="blog">
-        <Link to={`/blogs/${blog.id}`}>
-          {blog.title} {blog.author}
-        </Link>
-      </div>
+      <TableRow>
+        <TableCell>
+          <Link to={`/blogs/${blog.id}`}>
+            {blog.title} {blog.author}
+          </Link>
+        </TableCell>
+      </TableRow>
     )
   }
 
@@ -129,12 +147,22 @@ const App = () => {
     return (
       <form onSubmit={() => createComment(id)}>
         <div>
-          <input
+          <TextField
+            id="comment"
+            label="type your comment here"
+            type="comment"
             value={comment}
             onChange={({ target }) => setComment(target.value)}
           />
         </div>
-        <button type="submit">add comment</button>
+        <Button
+          variant="contained"
+          color="primary"
+          id="comment-button"
+          type="submit"
+        >
+          add comment
+        </Button>
       </form>
     )
   }
@@ -145,22 +173,36 @@ const App = () => {
 
     return (
       <div>
-        <h2>
+        <Typography variant="h4" gutterBottom>
           {blog.title} {blog.author}
-        </h2>
+        </Typography>
         <div>
           {' '}
           <a href={blog.url}> {blog.url}</a>{' '}
         </div>
         <div>
           likes {blog.likes}
-          <button onClick={() => like(blog)}>like</button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => like(blog)}
+          >
+            like
+          </Button>
         </div>
         <div>added by {blog.user.name}</div>
         {user && blog.user.username === user.username && (
-          <button onClick={() => remove(blog)}>delete</button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => remove(blog)}
+          >
+            delete
+          </Button>
         )}
-        <h2>comments</h2>
+        <Typography variant="h5" gutterBottom>
+          comments
+        </Typography>
         <CommentForm id={id} />
         <ul>
           {blog.comments.map((comment) => {
@@ -178,9 +220,15 @@ const App = () => {
           <NewBlog createBlog={createBlog} />
         </Togglable>
         <div>
-          {blogs.sort(byLikes).map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
+          <TableContainer>
+            <Table>
+              <TableBody>
+                {blogs.sort(byLikes).map((blog) => (
+                  <Blog key={blog.id} blog={blog} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
     )
@@ -189,28 +237,28 @@ const App = () => {
   const Users = () => {
     return (
       <div>
-        <h2>Users</h2>
+        <Typography variant="h5" gutterBottom>
+          Users
+        </Typography>
         <div>
-          <table>
-            <thead>
-              <tr>
-                <th> name </th>
-                <th> blogs created </th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => {
-                return (
-                  <tr key={user.username}>
-                    <td>
+          <TableContainer>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Added blogs</TableCell>
+                </TableRow>
+                {users.map((user) => (
+                  <TableRow key={user.username}>
+                    <TableCell>
                       <Link to={`/users/${user.id}`}>{user.name}</Link>
-                    </td>
-                    <td>{user.blogs.length}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                    </TableCell>
+                    <TableCell>{user.blogs.length}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
     )
@@ -225,8 +273,12 @@ const App = () => {
     }
     return (
       <div>
-        <h2>{user.name}</h2>
-        <h4>added blogs</h4>
+        <Typography variant="h3" gutterBottom>
+          {user.name}
+        </Typography>
+        <Typography variant="h4" gutterBottom>
+          added blogs
+        </Typography>
         <ul>
           {user.blogs.map((blog) => {
             return <li key={blog.id}>{blog.title}</li>
@@ -237,32 +289,68 @@ const App = () => {
   }
 
   const Header = () => {
+    const navigate = useNavigate()
+    return (
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="medium"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            ></IconButton>
+            <Typography
+              variant="subtitle1"
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
+              {user.name} logged in
+            </Typography>
+            <Button color="inherit" onClick={() => navigate('/users')}>
+              Users
+            </Button>
+            <Button color="inherit" onClick={() => navigate('/')}>
+              Blogs
+            </Button>
+            <Button color="inherit" onClick={logout}>
+              logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    )
     return (
       <div>
         <div>
           <Link to="/"> blogs </Link>
           <Link to="/users"> users </Link>
-          {user.name} logged in
+
           <button onClick={logout}>logout</button>
         </div>
-        <h2>blog app</h2>
+        <Typography variant="h2" gutterBottom>
+          blog app
+        </Typography>
         <Notification info={info} />
       </div>
     )
   }
 
   return (
-    <div>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/users/:id" element={<User users={users} />} />
-          <Route path="/blogs/:id" element={<BlogView />} />
-        </Routes>
-      </Router>
-    </div>
+    <Container>
+      <div>
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User users={users} />} />
+            <Route path="/blogs/:id" element={<BlogView />} />
+          </Routes>
+        </Router>
+      </div>
+    </Container>
   )
 }
 
